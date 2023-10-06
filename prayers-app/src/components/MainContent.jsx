@@ -1,10 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from "@mui/material"
 import Prayers from "./prayers"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import moment from "moment"
+import "moment/dist/locale/ar-dz"
+moment.locale("ar-dz")
 
 const MainContent = () => {
-
+  // stste-for timer
+  const [timer,setTimer]=useState(10)
+  // stste for  date & day
+  const [today,setToday]=useState()
+ //state for timings of prayers
   const [timings, setTimings]=useState({
 
   Fajr: "05:27",
@@ -15,11 +23,12 @@ const MainContent = () => {
 
   })
   // logic
+  //initail city :elbeheria
   const [city ,setCity]=useState({
     displayname:"البحيره", apiname:"ElBeheira"
   })
 
-
+ //selcted city in menu >1,2,3...
   const clectedcity =[
     {displayname:"البحيره", apiname:"ElBeheira"},
     {displayname:"القاهره", apiname:"Cairo"},
@@ -27,25 +36,45 @@ const MainContent = () => {
     
   ]
  const handleCityChange=(e)=>{
-  console.log(e.target.value)
+  // console.log(e.target.value)
   const cityOpject = clectedcity.find((city)=>{
     return city.apiname == e.target.value;
   })
   setCity(cityOpject)
  }
-
+//  fitching data from api
  const getTimings = async()=>{
   const response = await axios.get(`https://api.aladhan.com/v1/timingsByCity?city=${city.apiname}&country=Eg`);
-  console.log(response.data.data.timings.Asr)
+  // console.log(response.data.data.timings)
   setTimings(response.data.data.timings)
  }
-
+//  use effect for handle side effects
 useEffect(()=>{
-
   getTimings()
-
-
 },[city])
+
+// use effect for date & timer
+useEffect(()=>{
+  const date=moment();
+  // console.log(date.format("LLLL"))
+  setToday(date.format("MMM Do YYYY | h:mm"))
+
+  
+const interval =setInterval(()=>{
+  console.log("jjjjjj")
+   setTimer((minus)=>{
+ return minus -1
+   })
+},1000)
+  //clear up for side effect /// very important
+return()=>( 
+
+  clearInterval(interval)
+)
+  
+},[])
+
+
 
 
   return (
@@ -54,8 +83,9 @@ useEffect(()=>{
 
     <Grid container >
     <Grid item xs={6} >
-         <h2>أكتوبر 2023|4:20</h2>
+         <h2>{today}</h2>
          <h1>{city.displayname} </h1>
+         <h1>{timer}</h1>
     </Grid>
       <Grid item xs={6}>
       <h2>متبقي حتي صلاه الفجر</h2>
