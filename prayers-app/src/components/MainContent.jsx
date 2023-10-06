@@ -8,7 +8,8 @@ import "moment/dist/locale/ar-dz"
 moment.locale("ar-dz")
 
 const MainContent = () => {
-
+//  remining
+const [reamining,setReamining]=useState("")
   // stste-for timer
   // const [timer,setTimer]=useState(10)
   const [nextPrayerIndex,setNextPrayerIndex]=useState(1)
@@ -17,7 +18,7 @@ const MainContent = () => {
  //state for timings of prayers
   const [timings, setTimings]=useState({
 
-  Fajr: "05:27",
+  Fajr: "05:28",
   Dhuhr:  "12:47",
   Asr: "16:10",
   Maghrib: "18:39",
@@ -85,7 +86,7 @@ return()=>(
   clearInterval(interval)
 )
   
-},[]);
+},[timings]);
 // ********************** [ TOP Timer ]********************
 // step-1->  what time in the moment // must be transfare string to object even Benefit from moment Library.
 // step-2->  weare i bettwen the preyers 1 - 2 - 3 - 4 - 5
@@ -126,15 +127,37 @@ const setupCountdowenTimer =()=>{
     }
     setNextPrayerIndex(prayerIndex);
 //
+  // setup counterdown timer
+  // 1- next pryer obj
+const nextpryerobject=prayersArray[prayerIndex] //know the key and know time that preyer
+// next pryer time
+const nextpryertime =timings[nextpryerobject.key] //string
+// nextPrayermoment for timer
+const nextPrayermoment =moment(nextpryertime,"hh:mm")
+console.log(nextpryertime)
+// combare time at the moment with time next preyer =>diff in moment
+//  اطرح الوقت اللي جاي ناقص الوقت الحالي
+let remaingtime = moment(nextpryertime,"hh:mm").diff(momentNow);
+console.log(remaingtime)
+if (remaingtime <0) {
+  const midnightdiff =moment("23:59:59","hh:mm:ss").diff(momentNow)
+  const fajrtomidnight = nextPrayermoment.diff(moment("00:00:00","hh:mm:ss"))
+  console.log(midnightdiff)
+  const totaldiffrence= midnightdiff+fajrtomidnight
+  remaingtime =totaldiffrence
+}
+// use duration => 00:00:00 تحول الصغيه للوقت من  الميكرو الي الصيغه الطبيعيه
+const durationtime =moment.duration( remaingtime)
+setReamining(`${durationtime.seconds()}:${durationtime.minutes()}:${durationtime.hours()}`)
+
+console.log( durationtime.hours(),
+durationtime.minutes(),
+durationtime.seconds())
+
+// total diff
 
 
 
-
-
-    // transfare
-    const Isha=timings["Isha"];
-    const Ishamoment = moment(Isha,"hh:mm")
-    console.log(momentNow.isAfter(Ishamoment))
     
 
 }
@@ -152,7 +175,7 @@ const setupCountdowenTimer =()=>{
     </Grid>
       <Grid item xs={6}>
   <h1>متبقي حتي صلاه {prayersArray[nextPrayerIndex].displayName}</h1>
-         <h1>00:10:20</h1>
+         <h1>{reamining}</h1>
     </Grid>
     </Grid>
    
