@@ -1,7 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack, recomposeColor } from "@mui/material"
+import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from "@mui/material"
 import Prayers from "./prayers"
 import axios from "axios"
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PlaceIcon from '@mui/icons-material/Place';
+
 import { useEffect, useState } from "react"
 import moment from "moment"
 import "moment/dist/locale/ar-dz"
@@ -57,7 +61,7 @@ const [reamining,setReamining]=useState("")
 //  fitching data from api
  const getTimings = async()=>{
   const response = await axios.get(`https://api.aladhan.com/v1/timingsByCity?city=${city.apiname}&country=Eg`);
-  // console.log(response.data.data.timings)
+
   setTimings(response.data.data.timings)
  }
 //  use effect for handle side effects
@@ -131,22 +135,27 @@ const setupCountdowenTimer =()=>{
   // 1- next pryer obj
 const nextpryerobject=prayersArray[prayerIndex] //know the key and know time that preyer
 // next pryer time
-const nextpryertime =timings[nextpryerobject.key] //string
+const nextpryertime =timings[nextpryerobject.key] //string throue key in arry for preyer
 // nextPrayermoment for timer
-const nextPrayermoment =moment(nextpryertime,"hh:mm")
-console.log(nextpryertime)
+const nextPrayermoment =moment(nextpryertime,"hh:mm") // take key and like way( " : ") hour & minte
+console.log(nextpryertime) //next pryer time
 // combare time at the moment with time next preyer =>diff in moment
 //  اطرح الوقت اللي جاي ناقص الوقت الحالي
-let remaingtime = moment(nextpryertime,"hh:mm").diff(momentNow);
+let remaingtime = moment(nextpryertime,"hh:mm").diff(momentNow);// === reremaingtime
 console.log(remaingtime)
+// بيطلع بالسالب لذالك نفذ هذا الشرط 
 if (remaingtime <0) {
+  //وهذا خاص بصلاه الفجر 
+  // الفرق بين  الان ونص الليل
   const midnightdiff =moment("23:59:59","hh:mm:ss").diff(momentNow)
-  const fajrtomidnight = nextPrayermoment.diff(moment("00:00:00","hh:mm:ss"))
+  // الفرق بين نص الليل والفجر
+  const fajrtomidnight = nextPrayermoment.diff(moment("00:00:00","hh:mm:ss"))//mid night00:00
   console.log(midnightdiff)
+
   const totaldiffrence= midnightdiff+fajrtomidnight
-  remaingtime =totaldiffrence
+  remaingtime =totaldiffrence // must use varuble let even egnore error
 }
-// use duration => 00:00:00 تحول الصغيه للوقت من  الميكرو الي الصيغه الطبيعيه
+// use: duration => 00:00:00 تحول الصغيه للوقت من  الميكرو الي الصيغه الطبيعيه
 const durationtime =moment.duration( remaingtime)
 setReamining(`${durationtime.seconds()}:${durationtime.minutes()}:${durationtime.hours()}`)
 
@@ -169,8 +178,8 @@ durationtime.seconds())
 
     <Grid container >
     <Grid item xs={6} >
-         <h2>{today}</h2>
-         <h1>{city.displayname} </h1>
+         <h2 style={{display:'flex',alignItems:'center'}}>{today}<AccessTimeIcon style={{marginRight:"10px"}}/></h2>
+         <h1 style={{color:'#aaa'}}>{city.displayname} <span style={{color:'#fff'}} >مصر<span ><PlaceIcon /></span></span></h1>
          {/* <h1>{timer}</h1> */}
     </Grid>
       <Grid item xs={6}>
@@ -182,9 +191,14 @@ durationtime.seconds())
     </div>
     <Divider style={{borderColor:'#aaa',opacity:'.2'}}/>
         {/* cart */}
-   <Stack direction={"row"} 
+   <Stack className="cards"
+    direction={"row"} 
 				justifyContent={"space-around"}
-				style={{ marginTop: "50px" }}>
+        // flexWrap={"wrap"}
+      
+       
+				style={{ marginTop: "50px" ,backgroundColor:'blue'}}
+        >
     <Prayers 
     name={'الفجر'}
     time={timings.Fajr}
