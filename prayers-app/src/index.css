@@ -29,11 +29,3 @@ body{
   background-color:rgb(0, 0, 0);
   width: 10px;
 }
-.cards{
-   
-}
-.card{
-    /* display: grid;
-    grid-template-columns: repeat(auto-fit ,minmax(19rem, 1fr));
-    gap: 1.5rem; */
-}

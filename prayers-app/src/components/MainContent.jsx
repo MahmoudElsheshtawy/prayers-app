@@ -192,7 +192,7 @@ durationtime.seconds())
         // flexWrap={"wrap"}
       
        
-				style={{ marginTop: "50px" ,backgroundColor:'blue'}}
+				style={{ marginTop: "50px" }}
         >
     <Prayers 
     name={'الفجر'}
