@@ -3,9 +3,7 @@ import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack } 
 import Prayers from "./prayers"
 import axios from "axios"
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PlaceIcon from '@mui/icons-material/Place';
-
 import { useEffect, useState } from "react"
 import moment from "moment"
 import "moment/dist/locale/ar-dz"
@@ -70,9 +68,6 @@ useEffect(()=>{
 },[city])
 
 // use effect for date & timer
-                                // console.log("jjjjjj")
-                               //   setTimer((minus)=>{
-                              //  return minus -1
 useEffect(()=>{
   //date and time
   const date=moment();

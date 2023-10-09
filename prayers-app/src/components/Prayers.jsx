@@ -5,7 +5,7 @@ const Prayers = ({name ,time ,image}) => {
   return (
 <>
 <Card sx={{ maxWidth: 350 }} className="card" style={{backgroundColor:'aqua'}}>
-   {/* <div className="card"> */}
+
    <CardMedia
         sx={{ height: 150 ,width:220 ,objectFit:'cover'}}
         image={image}
@@ -20,7 +20,7 @@ const Prayers = ({name ,time ,image}) => {
           
         </Typography>
       </CardContent>
-   {/* </div> */}
+
     
     </Card>
 
